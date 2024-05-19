@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azizbek Gulomov's Resume</title>
+    <title>{{ candidate.name }}'s Resume</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -83,51 +84,47 @@
 <body>
     <div class="container">
         <div class="left-column">
-            <img src="profile.jpg" alt="Azizbek Gulomov">
+            {% for candidate in Candidate %}
+            	<img src="{{ candidate.image.url }}" alt="{{ candidate.name }}">
+            {% endfor %}
+            
+            
             <h2>Contact</h2>
-            <p><strong>Phone:</strong> +998 99 667 15 29</p>
-            <p><strong>Email:</strong> azizgulomov1529@gmail.com</p>
-            <p><strong>Address:</strong> 180100 Karshi city Kashkadarya region Uzbekistan</p>
+            <p><strong>Phone:</strong> {{ candidate.phone }}</p>
+            <p><strong>Email:</strong> {{ candidate.email }}</p>
+            <p><strong>Address:</strong> {{ candidate.address }}</p>
             <h2>Education</h2>
-            <p>2008-2017<br>1st specialized school in Karshi city</p>
-            <p>2017-2020<br>Karshi polytechnic college</p>
-            <p>2020<br>Karshi branch Tashkent irrigation and agricultural mechanization institute</p>
+            {% for study in candidate.studies_set.all %}
+                <p>{{ study.years }}<br>{{ study.name }}</p>
+            {% endfor %}
             <h2>Expertise</h2>
             <ul>
-                <li>Python programming language</li>
-                <li>Django Rest Framework (create API)</li>
-                <li>Deploy Servers</li>
-                <li>Good at communicating</li>
-                <li>Leadership skills</li>
-                <li>Volunteering skills</li>
+                {% for skill in candidate.softskills_set.all %}
+                    <li>{{ skill.name }}</li>
+                {% endfor %}
             </ul>
             <h2>Language</h2>
-            <p>English (B2 Multilevel certificate (52))</p>
-            <p>Russian (B1)</p>
-            <p>Uzbek (C1)</p>
+            {% for language in candidate.language_set.all %}
+                <p>{{ language.name }} ({{ language.level }})</p>
+            {% endfor %}
         </div>
         <div class="right-column">
-            <h1>Azizbek Gulomov</h1>
-            <h3>Python Backend Developer & Startuper</h3>
-            <p>My name is Azizbek Gulomov, I was born in 2002 in the city of Karshi in Uzbekistan. I’m a graduate student at the Karshi branch of the Tashkent irrigation and agricultural mechanization institute and a Python backend developer at the IT Park Kashkadarya region. I have experience in coding, knowledge, information technology, and selling IT products to business enterprises, trade industries, and educational centers.</p>
+            <h1>{{ candidate.name }}</h1>
+            <h3>{{ candidate.summary }}</h3>
             <div class="experience">
                 <h2>Experience</h2>
-                <h3>2021-2022</h3>
-                <p><strong>IT park resident in Karshi city</strong><br>Junior developer</p>
-                <p>In 2020, I started learning programming. After completing 1 year offline course, I started IT Park as Junior Backend developer and resident</p>
-                <h3>2022-2023</h3>
-                <p><strong>Mentor at the education IT centre</strong></p>
-                <p>Worked at the IT center as a Mentor from October 2022 to September 2023 and taught about 100 students</p>
-                <h3>2022</h3>
-                <p><strong>Karshi Engineering Economics institute</strong><br>Developer</p>
-                <p>I created web programs and mini-applications for the institute professors at the Institute of Karshi Engineering and Economics institute</p>
-                <h3>2023 - Present</h3>
-                <p><strong>Freelancer and Startuper</strong></p>
-                <p>Since the beginning of 2023, I and my team have been preparing software products, systems and virtual guides for enterprises and organizations engaged in agriculture, technology, production, trade and services.</p>
-                <p>Links: <a href="http://texnoland.uz">texnoland.uz</a>, <a href="http://texnosoft.uz">texnosoft.uz</a>, <a href="http://smartride.uz/smartadmin">smartride.uz/smartadmin</a>, <a href="http://flot.uz">flot.uz</a></p>
-                <p>YouTube: <a href="http://www.youtube.com/@azizbekgulomov021">youtube.com/@azizbekgulomov021</a></p>
+                {% for experience in candidate.experience_set.all %}
+                    <h3>{{ experience.years }}</h3>
+                    <p><strong>{{ experience.company_name }}</strong><br>{{ experience.position }}</p>
+                    <p>{{ experience.describtion }}</p>
+                {% endfor %}
             </div>
-            <p>(Currently, apart from projects, I am preparing for IELTS. The goal is to get an IELTS certificate before graduating from the university, go to a foreign country for a master's degree, and at the same time work in an IT company)</p>
+            <div class="social-networks">
+                <h2>Social Networks</h2>
+                {% for network in candidate.socialnetworks_set.all %}
+                    <p><strong>{{ network.name }}:</strong> <a href="{{ network.link }}">{{ network.link }}</a></p>
+                {% endfor %}
+            </div>
         </div>
     </div>
     <div class="print-button">
